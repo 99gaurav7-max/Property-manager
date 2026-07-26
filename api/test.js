@@ -1,8 +1,6 @@
-export default {
-  fetch(request) {
-    return new Response(JSON.stringify({ ok: true }), {
-      status: 200,
-      headers: { 'content-type': 'application/json' },
-    });
-  },
-};
+import express from 'express';
+const app = express();
+app.get('*', (req, res) => {
+  res.json({ status: 'ok', source: 'test.js', path: req.path });
+});
+export default app;

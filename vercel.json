@@ -1,8 +1,9 @@
 {
+  "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "functions": {
-    "api/**/*.{js,ts}": { "runtime": "@vercel/node@2" }
+    "api/**/*.{js,ts}": { "runtime": "@vercel/node@3" }
   },
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
