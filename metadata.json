@@ -1,0 +1,6 @@
+{
+  "name": "Property and Tenant Manager",
+  "description": "A dark-themed, royal, and highly polished property and tenant management suite for admins and owners, featuring account verification, KPI analytics, automatic invoices, and CSV reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
