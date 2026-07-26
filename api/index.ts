@@ -1,8 +1,6 @@
-import { createApp } from '../server';
-
-let _app: any;
-
-export default async function handler(req: any, res: any) {
-  if (!_app) _app = await createApp();
-  _app(req, res);
-}
+import express from 'express';
+const app = express();
+app.get('*', (req, res) => {
+  res.json({ status: 'ok', path: req.path });
+});
+export default app;
