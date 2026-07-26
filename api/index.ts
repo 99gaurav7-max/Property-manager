@@ -1,4 +1,12 @@
 import serverless from 'serverless-http';
-import app from '../server.ts';
+import { createApp } from '../server';
 
-export const handler = serverless(app);
+let _handler: any;
+
+export async function handler(event: any, context: any) {
+  if (!_handler) {
+    const app = await createApp();
+    _handler = serverless(app);
+  }
+  return _handler(event, context);
+}

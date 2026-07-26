@@ -924,12 +924,15 @@ async function createApp() {
   return app;
 }
 
-const app = await createApp();
-export default app;
+export { createApp };
 
 if (process.argv[1]?.includes('server')) {
-  const PORT = Number(process.env.PORT) || 3001;
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`API server running on http://localhost:${PORT}`);
+  createApp().then((app) => {
+    const PORT = Number(process.env.PORT) || 3001;
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`API server running on http://localhost:${PORT}`);
+    });
+  }).catch((error) => {
+    console.error("Failed to start server:", error);
   });
 }
