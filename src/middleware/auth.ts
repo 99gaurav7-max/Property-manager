@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
 
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET || JWT_SECRET.length < 32) {
-  throw new Error('JWT_SECRET environment variable must be set to at least 32 characters.');
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret.length < 32) {
+    throw new Error('JWT_SECRET environment variable must be set to at least 32 characters.');
+  }
+  return secret;
 }
 
 export interface AuthRequest extends Request {
@@ -15,18 +18,20 @@ export interface AuthRequest extends Request {
 }
 
 export function createToken(payload: { uid: string; email: string; role: string }): string {
+  const secret = getJwtSecret();
   const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
   const data = Buffer.from(JSON.stringify(payload)).toString('base64url');
-  const signature = crypto.createHmac('sha256', JWT_SECRET).update(`${header}.${data}`).digest('base64url');
+  const signature = crypto.createHmac('sha256', secret).update(`${header}.${data}`).digest('base64url');
   return `${header}.${data}.${signature}`;
 }
 
 export function verifyToken(token: string): { uid: string; email: string; role: string } | null {
   try {
+    const secret = getJwtSecret();
     const parts = token.split('.');
     if (parts.length !== 3) return null;
     const [header, data, signature] = parts;
-    const expectedSignature = crypto.createHmac('sha256', JWT_SECRET).update(`${header}.${data}`).digest('base64url');
+    const expectedSignature = crypto.createHmac('sha256', secret).update(`${header}.${data}`).digest('base64url');
     if (signature !== expectedSignature) return null;
     return JSON.parse(Buffer.from(data, 'base64url').toString('utf8'));
   } catch (e) {
