@@ -927,7 +927,7 @@ function createApp() {
 const app = createApp();
 export default app;
 
-if (process.argv[1]?.includes('server')) {
+if (process.env.VERCEL !== '1') {
   const PORT = Number(process.env.PORT) || 3001;
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`API server running on http://localhost:${PORT}`);
