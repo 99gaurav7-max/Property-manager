@@ -85,7 +85,7 @@ async function wipeAllUsersAndData() {
   }
 }
 
-async function createApp() {
+function createApp() {
   const app = express();
   const PORT = Number(process.env.PORT) || 3001;
 
@@ -924,15 +924,12 @@ async function createApp() {
   return app;
 }
 
-export { createApp };
+const app = createApp();
+export default app;
 
 if (process.argv[1]?.includes('server')) {
-  createApp().then((app) => {
-    const PORT = Number(process.env.PORT) || 3001;
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`API server running on http://localhost:${PORT}`);
-    });
-  }).catch((error) => {
-    console.error("Failed to start server:", error);
+  const PORT = Number(process.env.PORT) || 3001;
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`API server running on http://localhost:${PORT}`);
   });
 }
